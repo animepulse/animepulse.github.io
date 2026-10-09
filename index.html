@@ -160,7 +160,7 @@ $("modal").classList.remove("show");document.body.classList.remove("modal-open")
 }
 window.addEventListener("popstate",()=>{if($("modal").classList.contains("show"))closeDetails(false)});
 $("closeModal").addEventListener("click",()=>closeDetails());$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeDetails()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDetails()});$("year").textContent=new Date().getFullYear();render();
-
+</script>
 <script id="languageFeature">
 const translations = {
 uz: {
@@ -214,8 +214,6 @@ $("menuButton").addEventListener("click",()=>{const open=$("languageMenu").class
 $("languageMenu").addEventListener("click",e=>{const b=e.target.closest("[data-lang]");if(b)setLanguage(b.dataset.lang)});
 document.addEventListener("click",e=>{if(!e.target.closest(".menu-wrap"))$("languageMenu").classList.remove("open")});
 </script>
-
-</script>
 <script id="dynamicTranslation">
 translateStatic();const originalRender=render;
 render=function(){originalRender();if(currentLang!=="uz")return;
@@ -241,5 +239,4 @@ root.querySelectorAll(".voice-option").forEach(b=>{if(b.dataset.voice==="Суб�
 root.querySelectorAll(".tag").forEach(x=>x.textContent=tr(x.textContent));
 };
 </script>
-
 </body></html>
