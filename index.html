@@ -82,12 +82,18 @@ $("searchBtn").addEventListener("click",()=>{showFavorites=false;render()});$("s
 $("favoritesToggle").addEventListener("click",()=>{showFavorites=!showFavorites;activeGenre="Все";document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x.dataset.genre==="Все"));render()});
 function openDetails(id){
 const a=anime.find(x=>x.id===id);if(!a)return;
+if(!$("modal").classList.contains("show"))history.pushState({animePulseDetail:id},"","#anime-"+id);
 document.body.classList.add("modal-open");
 const yt='https://www.youtube.com/results?search_query='+encodeURIComponent(a.title+' anime trailer');
 $("modalTitle").textContent="";
 $("modalBody").innerHTML='<div class="detail-layout"><div class="detail-copy"><h3>'+a.title+'</h3><div class="meta">'+a.year+' · ★ '+a.rating+' · '+a.status+'</div><div class="detail-genres">'+a.genres.map(g=>'<span class="tag">'+g+'</span>').join("")+'</div><p class="detail-description">'+a.desc+'</p></div><img class="detail-poster" src="'+a.image+'" alt="Постер аниме '+a.title+'" onerror="this.style.display=\'none\'"></div><section class="media-section"><h4>Фотографии</h4><p class="media-hint">Листай галерею горизонтально слева направо.</p><div class="media-strip"><div class="media-tile"><img src="'+a.image+'" alt="Постер '+a.title+'"><span>Постер аниме</span></div><div class="media-tile"><img src="'+a.image+'" alt="Кадр '+a.title+'"><span>Изображение / кадр</span></div><div class="media-tile"><img src="'+a.image+'" alt="Иллюстрация '+a.title+'"><span>Иллюстрация</span></div></div><h4 style="margin-top:18px">Видео и отрывки</h4><p class="media-hint">Карточки видео тоже прокручиваются слева направо.</p><div class="media-strip"><a class="media-tile" href="'+yt+'" target="_blank" rel="noopener"><div class="media-video-thumb"><span class="media-play">▶</span></div><span>Смотреть трейлер · '+a.title+'</span></a><a class="media-tile" href="'+yt+'" target="_blank" rel="noopener"><div class="media-video-thumb"><span class="media-play">▶</span></div><span>Найти видеоотрывки</span></a></div></section>';
 $("modal").classList.add("show");$("modal").scrollTop=0;document.querySelector("#modal .modal-box").scrollTop=0;
 }
-function closeDetails(){ $("modal").classList.remove("show");document.body.classList.remove("modal-open"); }
-$("closeModal").addEventListener("click",closeDetails);$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeDetails()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDetails()});$("year").textContent=new Date().getFullYear();render();
+function closeDetails(useHistory=true){
+if(!$("modal").classList.contains("show"))return;
+if(useHistory&&history.state&&history.state.animePulseDetail){history.back();return;}
+$("modal").classList.remove("show");document.body.classList.remove("modal-open");
+}
+window.addEventListener("popstate",()=>{if($("modal").classList.contains("show"))closeDetails(false)});
+$("closeModal").addEventListener("click",()=>closeDetails());$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeDetails()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDetails()});$("year").textContent=new Date().getFullYear();render();
 </script></body></html>
