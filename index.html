@@ -23,6 +23,19 @@
 .detail-description p{margin:0 0 10px}
 @media(max-width:560px){.detail-layout{grid-template-columns:minmax(0,1fr) 112px;gap:12px}.detail-copy h3{font-size:20px}.detail-poster{border-radius:10px}.modal{padding:10px}.modal-box{padding:14px;max-height:92vh}}
 
+
+/* Full-screen anime detail view replaces the catalog */
+#modal{padding:0;align-items:stretch;justify-content:stretch;background:var(--bg);z-index:20}
+#modal .modal-box{width:100%;max-width:none;height:100%;max-height:none;overflow-y:auto;border:0;border-radius:0;padding:22px clamp(16px,4vw,48px);background:var(--bg)}
+#modal .modal-top{position:sticky;top:0;z-index:2;background:var(--bg);padding:0 0 12px;border-bottom:1px solid var(--line)}
+#modal .modal-top h2{display:none}
+#modal #modalBody{max-width:1050px;width:100%;margin:clamp(24px,7vh,70px) auto 0}
+#modal .detail-layout{grid-template-columns:minmax(0,1fr) minmax(220px,34%);gap:clamp(20px,5vw,56px);align-items:start}
+#modal .detail-poster{width:100%;max-height:70vh;aspect-ratio:3/4;object-fit:cover}
+#modal .detail-copy h3{font-size:clamp(28px,4vw,44px);margin:0 0 18px}
+#modal .detail-description{font-size:16px;line-height:1.8}
+@media(max-width:560px){#modal .modal-box{padding:14px}#modal .modal-top{padding-bottom:10px}#modal #modalBody{margin-top:24px}#modal .detail-layout{grid-template-columns:minmax(0,1fr) 38%;gap:12px}#modal .detail-poster{max-height:58vh}#modal .detail-copy h3{font-size:22px}}
+
 </style></head><body>
 <header><div class="top"><div class="logo">Anime<span>Pulse</span></div><button class="pill" id="favoritesToggle">♡ Избранное <span id="favCount">0</span></button></div></header>
 <main><section class="hero"><div class="eyebrow">ТВОЙ МИР АНИМЕ</div><h1>Найди свою<br>следующую историю.</h1><p>Открывай новые миры, сохраняй любимые тайтлы и собирай личную коллекцию аниме.</p><div class="search"><input id="search" placeholder="Название или жанр..." aria-label="Поиск аниме"><button class="primary" id="searchBtn">Найти</button></div></section>
