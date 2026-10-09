@@ -99,8 +99,19 @@ body.modal-open{overflow:hidden;position:fixed;width:100%;}
 .comment-text{font-size:14px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
 .comments-empty{padding:16px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:13px;text-align:center}
 @media(max-width:560px){.comments-section{padding:14px;margin-top:24px}.comment-head{align-items:flex-start;flex-direction:column;gap:3px}}
+
+/* Language menu */
+.menu-wrap{position:relative;margin-left:auto;margin-right:10px}
+.menu-button{width:42px;height:42px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;border:1px solid var(--line);border-radius:11px;background:var(--panel);cursor:pointer}
+.menu-button span{display:block;width:19px;height:2px;border-radius:2px;background:var(--text)}
+.language-menu{display:none;position:absolute;right:0;top:50px;min-width:170px;padding:8px;background:var(--panel);border:1px solid var(--line);border-radius:13px;box-shadow:0 12px 35px #0008;z-index:20}
+.language-menu.open{display:grid;gap:5px}
+.language-menu button{padding:11px 12px;text-align:left;border:0;border-radius:9px;background:transparent;color:var(--text);cursor:pointer;font:inherit}
+.language-menu button:hover,.language-menu button.active{background:#ff6a1a22;color:#ff9b6d}
+@media(max-width:420px){.logo{font-size:20px}header{padding:11px 12px}.menu-wrap{margin-right:6px}}
+
 </style></head><body>
-<header><div class="top"><div class="logo">Anime<span>Pulse</span></div><button class="pill" id="favoritesToggle">♡ Избранное <span id="favCount">0</span></button></div></header>
+<header><div class="top"><div class="logo">Anime<span>Pulse</span></div><div class="menu-wrap"><button class="menu-button" id="menuButton" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button><div class="language-menu" id="languageMenu"><button type="button" data-lang="uz">🇺🇿 O‘zbekcha</button><button type="button" data-lang="ru" class="active">🇷🇺 Русский</button></div></div><button class="pill" id="favoritesToggle">♡ <span data-i18n="favorites">Избранное</span> <span id="favCount">0</span></button></div></header>
 <main><section class="hero"><div class="eyebrow">ТВОЙ МИР АНИМЕ</div><h1>Найди свою<br>следующую историю.</h1><p>Открывай новые миры, сохраняй любимые тайтлы и собирай личную коллекцию аниме.</p><div class="search"><input id="search" placeholder="Название или жанр..." aria-label="Поиск аниме"><button class="primary" id="searchBtn">Найти</button></div></section>
 <div class="section-head"><h2 id="listTitle">Популярное</h2><span id="resultCount" class="meta"></span></div>
 <div class="filters" id="filters"><button class="filter active" data-genre="Все">Все</button><button class="filter" data-genre="Фэнтези">Фэнтези</button><button class="filter" data-genre="Экшен">Экшен</button><button class="filter" data-genre="Романтика">Романтика</button><button class="filter" data-genre="Драма">Драма</button><button class="filter" data-genre="Приключения">Приключения</button></div>
@@ -149,4 +160,86 @@ $("modal").classList.remove("show");document.body.classList.remove("modal-open")
 }
 window.addEventListener("popstate",()=>{if($("modal").classList.contains("show"))closeDetails(false)});
 $("closeModal").addEventListener("click",()=>closeDetails());$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeDetails()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDetails()});$("year").textContent=new Date().getFullYear();render();
-</script></body></html>
+
+<script id="languageFeature">
+const translations = {
+uz: {
+"favorites":"Sevimlilar","heroEyebrow":"SENING ANIME OLAMING","heroTitle":"Keyingi\ntarang hikoyangni top.","heroText":"Yangi olamlarni kashf et, sevimli animelaringni saqla va shaxsiy kolleksiyangni yarat.",
+"searchPlaceholder":"Nomi yoki janri...","search":"Qidirish","popular":"Mashhur","all":"Barchasi","fantasy":"Fantastika","action":"Jangari","romance":"Romantika","drama":"Drama","adventure":"Sarguzasht","titleCount":"ta anime","nothing":"Hech narsa topilmadi.","tryAgain":"Boshqa nom yoki janrni sinab ko‘r.",
+"note":"AnimePulse demo-loyihasi. Bu tavsiyalar katalogi, seriallarni tomosha qilish sayti emas. Posterlar MyAnimeList CDN orqali yuklanadi. Rasm vaqtincha ochilmasa, kartada rangli fon ko‘rinadi.",
+"footer":"AnimePulse © ","fan":"· Sanab o‘tilgan asarlarning huquq egalariga aloqasi bo‘lmagan muxlislar loyihasi.",
+"close":"Yopish ×","watch":"Animeni tomosha qilish","choose":"Ovoz va manbani tanlang","playerDesc":"AnimePulse video pleeri · seriyalar mavjudligi tanlangan manbaga bog‘liq",
+"episodes":"Qismni tanlash","episodeSelected":"Tanlangan qism","of":"/ 12. Tanlov tanlangan ovoz uchun qidiruvni yangilaydi.",
+"voice":"Ovoz / manba","findVideo":"Videoni topish ↗","sourceChosen":"Tanlangan manba","searchOnly":"Hozircha bu video qidiruvi; qismning to‘g‘ridan-to‘g‘ri oqimi ulanmagan.",
+"photos":"Rasmlar","galleryHint":"Galereyani chapdan o‘ngga suring.","poster":"Anime posteri","frame":"Kadr / tasvir","video":"Video va lavhalar","videoHint":"Video kartalarini ham chapdan o‘ngga surish mumkin.","trailer":"Treylerni ko‘rish · ","findClips":"Video lavhalarini topish","comments":"Izohlar","commentsIntro":"Izohlar barcha tashrif buyuruvchilar uchun umumiy. Izoh yozish uchun GitHub orqali kiring — bu spamdan himoya qilishga yordam beradi.",
+"commentsLoading":"Umumiy izohlar tizimi yuklanmoqda…","AniLibria":"AniLibria","AniStar":"AniStar","AnimeVost":"AnimeVost","Субтитры":"Subtitrlar","Оригинал":"Original",
+"Solo Leveling":"Solo Leveling","Атака титанов":"Titanlarga hujum","Твоё имя":"Sening isming","Магическая битва":"Sehrli jang","Фрирен":"Frieren","Хоримия":"Horimiya","Вайолет Эвергарден":"Violet Evergarden","Реинкарнация безработного":"Ishsizning qayta tug‘ilishi",
+"Охотник Сон Джин-у получает загадочную систему, которая позволяет ему становиться сильнее.":"Ovchi Son Jin-U kuchayishiga imkon beruvchi sirli tizimga ega bo‘ladi.",
+"Люди сражаются за выживание за стенами, защищающими их от гигантских титанов.":"Odamlar ularni ulkan titanlardan himoya qiluvchi devorlar ortida omon qolish uchun kurashadi.",
+"Два подростка загадочным образом меняются телами и пытаются найти друг друга.":"Ikki o‘smir sirli tarzda tanalarini almashtirib, bir-birini topishga urinadi.",
+"Юдзи Итадори вступает в мир проклятий и опасных магических сражений.":"Yudzi Itadori la’natlar va xavfli sehrli janglar olamiga kiradi.",
+"Эльфийская волшебница заново открывает ценность времени и человеческих отношений.":"Elf sehrgar vaqt va insoniy munosabatlarning qadrini qaytadan anglaydi.",
+"Хори и Миямура открывают друг другу настоящих себя за пределами школьных образов.":"Xori va Miyamura maktabdagi obrazlaridan tashqarida haqiqiy qiyofalarini bir-biriga ochadi.",
+"Бывшая солдатка учится понимать чувства людей, помогая им писать письма.":"Sobiq askar odamlarga xat yozishda yordam berib, ularning hislarini tushunishni o‘rganadi.",
+"Мужчина получает второй шанс в магическом мире и пытается прожить новую жизнь иначе.":"Bir erkak sehrli olamda ikkinchi imkoniyatga ega bo‘lib, yangi hayotini boshqacha yashashga urinadi.",
+"Фэнтези":"Fantastika","Экшен":"Jangari","Романтика":"Romantika","Драма":"Drama","Приключения":"Sarguzasht",
+"Завершён сезон":"Mavsum yakunlangan","Завершено":"Yakunlangan","Фильм":"Film","Несколько сезонов":"Bir necha mavsum","Продолжается":"Davom etmoqda",
+"Подробнее ↗":"Batafsil ↗","Найди свою":"Keyingi","следующую историю.":"hikoyangni top.","Название или жанр...":"Nomi yoki janri...","Найти":"Qidirish","Популярное":"Mashhur","Все":"Barchasi"
+}
+};
+let currentLang = localStorage.getItem("animepulse-language") || "ru";
+function tr(s){return currentLang==="uz" && translations.uz[s] ? translations.uz[s] : s}
+function translateStatic(){
+document.documentElement.lang=currentLang==="uz"?"uz":"ru";
+document.title=currentLang==="uz"?"AnimePulse — anime katalogi":"AnimePulse — каталог аниме";
+document.querySelector('[data-i18n="favorites"]').textContent=tr("Избранное");
+$("search").placeholder=tr("Название или жанр...");
+$("search").setAttribute("aria-label",tr("Название или жанр..."));
+$("searchBtn").textContent=tr("Найти");
+document.querySelector(".eyebrow").textContent=tr("ТВОЙ МИР АНИМЕ");
+document.querySelector(".hero h1").innerHTML=currentLang==="uz"?"Keyingi<br>hikoyangni top.":"Найди свою<br>следующую историю.";
+document.querySelector(".hero p").textContent=currentLang==="uz"?translations.uz.heroText:"Открывай новые миры, сохраняй любимые тайтлы и собирай личную коллекцию аниме.";
+document.querySelector(".note").textContent=tr("Демо-проект AnimePulse. Это каталог-рекомендатель, а не сайт для просмотра серий. Постеры загружаются с CDN MyAnimeList. Если изображение временно недоступно, карточка покажет цветной фон.");
+document.querySelector("footer").innerHTML='AnimePulse © <span id="year">'+new Date().getFullYear()+'</span> '+tr("· Фанатский проект, не связанный с правообладателями перечисленных произведений.");
+document.querySelectorAll(".filter").forEach(b=>{const g=b.dataset.genre;const key=({"Все":"Все","Фэнтези":"Фэнтези","Экшен":"Экшен","Романтика":"Романтика","Драма":"Драма","Приключения":"Приключения"})[g];b.textContent=tr(key)});
+document.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("active",b.dataset.lang===currentLang));
+}
+function setLanguage(lang){
+currentLang=lang;try{localStorage.setItem("animepulse-language",lang)}catch(e){}
+translateStatic();render();
+if($("modal").classList.contains("show")){const id=Number(location.hash.replace("#anime-",""));if(id)openDetails(id)}
+$("languageMenu").classList.remove("open");$("menuButton").setAttribute("aria-expanded","false");
+}
+$("menuButton").addEventListener("click",()=>{const open=$("languageMenu").classList.toggle("open");$("menuButton").setAttribute("aria-expanded",String(open))});
+$("languageMenu").addEventListener("click",e=>{const b=e.target.closest("[data-lang]");if(b)setLanguage(b.dataset.lang)});
+document.addEventListener("click",e=>{if(!e.target.closest(".menu-wrap"))$("languageMenu").classList.remove("open")});
+</script>
+
+</script>
+<script id="dynamicTranslation">
+translateStatic();const originalRender=render;
+render=function(){originalRender();if(currentLang!=="uz")return;
+$("listTitle").textContent=showFavorites?"Sevimlilar":tr(activeGenre);
+$("resultCount").textContent=$("resultCount").textContent.replace(" тайтл(ов)"," ta anime");
+document.querySelectorAll("#catalog .card").forEach(card=>{
+const title=card.querySelector(".poster-title");if(title)title.textContent=tr(title.textContent);
+const meta=card.querySelector(".meta");if(meta){meta.textContent=meta.textContent.replace("Фэнтези","Fantastika").replace("Экшен","Jangari").replace("Романтика","Romantika").replace("Драма","Drama").replace("Приключения","Sarguzasht")}
+const desc=card.querySelector(".desc");if(desc)desc.textContent=tr(desc.textContent);
+const details=card.querySelector("[data-details]");if(details)details.textContent="Batafsil ↗";
+});
+if(!$("catalog").querySelector(".card"))$("catalog").innerHTML='<div class="empty">Hech narsa topilmadi.<br>Boshqa nom yoki janrni sinab ko‘r.</div>';
+};
+const originalOpenDetails=openDetails;
+openDetails=function(id){originalOpenDetails(id);if(currentLang!=="uz")return;
+const root=$("modalBody");
+root.querySelectorAll(".detail-copy h3").forEach(x=>x.textContent=tr(x.textContent));
+root.querySelectorAll(".detail-description").forEach(x=>x.textContent=tr(x.textContent));
+root.querySelectorAll(".anime-player h4").forEach(x=>{if(x.textContent==="Смотреть аниме")x.textContent="Animeni tomosha qilish";else if(x.textContent==="Выбор серии")x.textContent="Qismni tanlash"});
+const texts=[["Выбери озвучку и источник","Ovoz va manbani tanlang"],["Видеоплеер AnimePulse · доступность серий зависит от выбранного источника","AnimePulse video pleeri · seriyalar tanlangan manbaga bog‘liq"],["Озвучка / источник","Ovoz / manba"],["Найти видео ↗","Videoni topish ↗"],["Фотографии","Rasmlar"],["Листай галерею горизонтально слева направо.","Galereyani chapdan o‘ngga suring."],["Видео и отрывки","Video va lavhalar"],["Карточки видео тоже прокручиваются слева направо.","Video kartalarini ham chapdan o‘ngga surish mumkin."],["Комментарии","Izohlar"],["Комментарии общие для всех посетителей. Чтобы написать комментарий, войди в GitHub — это помогает защитить обсуждение от спама.","Izohlar barcha tashrif buyuruvchilar uchun umumiy. Izoh yozish uchun GitHub orqali kiring — bu spamdan himoya qiladi."]];
+root.querySelectorAll("h4,p,label,a,span,button,div").forEach(el=>{if(el.children.length===0){for(const [a,b] of texts)if(el.textContent.trim()===a)el.textContent=b}});
+root.querySelectorAll(".voice-option").forEach(b=>{if(b.dataset.voice==="Субтитры")b.textContent="Subtitrlar";if(b.dataset.voice==="Оригинал")b.textContent="Original"});
+root.querySelectorAll(".tag").forEach(x=>x.textContent=tr(x.textContent));
+};
+</script>
+
+</body></html>
