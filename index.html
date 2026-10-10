@@ -137,8 +137,8 @@ body.modal-open{overflow:hidden;position:fixed;width:100%;}
 <p class="note">Демо-проект AnimePulse. Это каталог-рекомендатель, а не сайт для просмотра серий. Постеры загружаются с CDN MyAnimeList. Если изображение временно недоступно, карточка покажет цветной фон.</p></main>
 <footer>AnimePulse © <span id="year"></span> · Фанатский проект, не связанный с правообладателями перечисленных произведений.</footer>
 <div class="modal" id="modal"><div class="modal-box"><div class="modal-top"><h2 id="modalTitle"></h2><button class="pill" id="closeModal">Закрыть ×</button></div><div id="modalBody"></div></div></div><div id="filmsView" aria-hidden="true">
-<header class="films-header"><div class="films-top"><div class="films-brand">Anime<span>Pulse</span> <span style="color:var(--text);font-size:15px;font-weight:700">/ Фильмы</span></div><button class="pill" id="closeFilms">← Назад к аниме</button></div></header>
-<main class="films-main"><section class="films-hero"><div class="eyebrow">КИНОТЕКА ANIMEPULSE</div><h1>Полнометражное кино</h1><p>Только игровые фильмы — без аниме и анимационных фильмов. Выбери фильм, чтобы открыть описание, жанры и рейтинг.</p><input id="filmSearch" placeholder="Найти фильм по названию или жанру…" aria-label="Поиск фильмов"></section>
+<header class="films-header"><div class="films-top"><div class="films-brand">Anime<span>Pulse</span> <span id="filmsSectionLabel" style="color:var(--text);font-size:15px;font-weight:700">/ Фильмы</span></div><div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><button class="pill" type="button" data-film-lang="uz">🇺🇿 UZ</button><button class="pill" type="button" data-film-lang="ru">🇷🇺 RU</button><button class="pill" id="closeFilms">← Назад к аниме</button></div></div></header>
+<main class="films-main"><section class="films-hero"><div class="eyebrow">КИНОТЕКА ANIMEPULSE</div><h1 id="filmsHeroTitle">Полнометражное кино</h1><p>Только игровые фильмы — без аниме и анимационных фильмов. Выбери фильм, чтобы открыть описание, жанры и рейтинг.</p><input id="filmSearch" placeholder="Найти фильм по названию или жанру…" aria-label="Поиск фильмов"></section>
 <div class="section-head"><h2 id="filmsTitle">Популярные фильмы</h2><span class="meta" id="filmCount"></span></div><section class="grid" id="filmsGrid"></section>
 <section class="film-detail" id="filmDetail"><button class="pill" id="backToFilms">← Все фильмы</button><div id="filmDetailContent"></div></section>
 </main></div>
@@ -201,15 +201,15 @@ $("closeModal").addEventListener("click",()=>closeDetails());$("modal").addEvent
 function renderFilms(){
 const q=$("filmSearch").value.trim().toLowerCase();
 const items=films.filter(f=>f.type!=="anime"&&!/аниме|anime|мультфильм|анимационн/i.test(f.title+" "+f.desc)&&(f.title+" "+f.genres.join(" ")+" "+f.desc).toLowerCase().includes(q));
-$("filmCount").textContent=items.length+" фильмов";
+$("filmCount").textContent=items.length+(currentLang==="uz"?" ta film":" фильмов");
 $("filmsGrid").style.display="";$("filmsTitle").style.display="";$("filmCount").style.display="";
 $("filmDetail").classList.remove("open");
-$("filmsGrid").innerHTML=items.length?items.map(f=>'<article class="card"><div class="poster" style="--c1:#5b2b42;--c2:#17223d"><img class="poster-img" src="'+f.image+'" alt="Постер '+f.title+'" loading="lazy" onerror="this.style.display=\'none\'"><span class="rank">★ '+f.rating+'</span><div class="poster-title">'+f.title+'</div></div><div class="info"><div class="meta">'+f.year+' · '+f.genres.join(" / ")+'</div><div class="desc">'+f.desc+'</div><div class="card-actions"><button data-film-details="'+f.id+'">Подробнее ↗</button></div></div></article>').join(""):'<div class="empty">Фильмы не найдены. Попробуй другое название или жанр.</div>';
+$("filmsGrid").innerHTML=items.length?items.map(f=>'<article class="card"><div class="poster" style="--c1:#5b2b42;--c2:#17223d"><img class="poster-img" src="'+f.image+'" alt="Постер '+f.title+'" loading="lazy" onerror="this.style.display=\'none\'"><span class="rank">★ '+f.rating+'</span><div class="poster-title">'+f.title+'</div></div><div class="info"><div class="meta">'+f.year+' · '+f.genres.join(" / ")+'</div><div class="desc">'+f.desc+'</div><div class="card-actions"><button data-film-details="'+f.id+'">'+(currentLang==="uz"?"Batafsil ↗":"Подробнее ↗")+'</button></div></div></article>').join(""):'<div class="empty">'+(currentLang==="uz"?"Film topilmadi. Boshqa nom yoki janrni sinab ko‘ring.":"Фильмы не найдены. Попробуй другое название или жанр.")+'</div>';
 }
 function openFilmDetails(id){
 const f=films.find(x=>x.id===id);if(!f)return;
 $("filmsGrid").style.display="none";$("filmsTitle").style.display="none";$("filmCount").style.display="none";$("filmDetail").classList.add("open");
-$("filmDetailContent").innerHTML='<div class="film-detail-layout"><div><div class="eyebrow">ANIMEPULSE FILM</div><h2>'+f.title+'</h2><div class="meta">'+f.year+' · ★ '+f.rating+' · Полнометражный фильм</div><div class="detail-genres">'+f.genres.map(g=>'<span class="tag">'+g+'</span>').join("")+'</div><p>'+f.desc+'</p><div class="film-actions"><a class="player-source-btn" href="https://www.youtube.com/results?search_query='+encodeURIComponent(f.title+" anime movie")+'" target="_blank" rel="noopener">Найти трейлер ↗</a></div><p class="media-hint">Кнопка открывает поиск трейлеров; сам фильм не размещён на AnimePulse.</p></div><img class="film-detail-poster" src="'+f.image+'" alt="Постер '+f.title+'" onerror="this.style.display=\'none\'"></div>';
+$("filmDetailContent").innerHTML='<div class="film-detail-layout"><div><div class="eyebrow">ANIMEPULSE FILM</div><h2>'+f.title+'</h2><div class="meta">'+f.year+' · ★ '+f.rating+' · '+(currentLang==="uz"?"To‘liq metrajli film":"Полнометражный фильм")+'</div><div class="detail-genres">'+f.genres.map(g=>'<span class="tag">'+g+'</span>').join("")+'</div><p>'+f.desc+'</p><div class="film-actions"><a class="player-source-btn" href="https://www.youtube.com/results?search_query='+encodeURIComponent(f.title+" anime movie")+'" target="_blank" rel="noopener">'+(currentLang==="uz"?"Treylerni topish ↗":"Найти трейлер ↗")+'</a></div><p class="media-hint">'+(currentLang==="uz"?"Bu tugma treyler qidiruvini ochadi; filmning o‘zi AnimePulse’da joylashtirilmagan.":"Кнопка открывает поиск трейлеров; сам фильм не размещён на AnimePulse.")+'</p></div><img class="film-detail-poster" src="'+f.image+'" alt="Постер '+f.title+'" onerror="this.style.display=\'none\'"></div>';
 $("filmsView").scrollTop=0;
 }
 $("openFilms").addEventListener("click",()=>{$("languageMenu").classList.remove("open");$("filmsView").classList.add("open");$("filmsView").setAttribute("aria-hidden","false");document.body.classList.add("modal-open");$("filmSearch").value="";renderFilms();$("filmsView").scrollTop=0});
@@ -262,9 +262,20 @@ document.querySelector("footer").innerHTML='AnimePulse © <span id="year">'+new 
 document.querySelectorAll(".filter").forEach(b=>{const g=b.dataset.genre;const key=({"Все":"Все","Фэнтези":"Фэнтези","Экшен":"Экшен","Романтика":"Романтика","Драма":"Драма","Приключения":"Приключения"})[g];b.textContent=tr(key)});
 document.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("active",b.dataset.lang===currentLang));
 }
+function translateFilms(){
+const uz=currentLang==="uz";
+$("filmsSectionLabel").textContent=uz?"/ Kinolar":"/ Фильмы";
+$("closeFilms").textContent=uz?"← Animelarga qaytish":"← Назад к аниме";
+$("filmSearch").placeholder=uz?"Film nomi yoki janri bo‘yicha qidirish…":"Найти фильм по названию или жанру…";
+$("filmSearch").setAttribute("aria-label",$("filmSearch").placeholder);
+$("filmsTitle").textContent=uz?"Mashhur filmlar":"Популярные фильмы";
+$("filmsGrid").querySelectorAll("[data-film-details]").forEach(b=>b.textContent=uz?"Batafsil ↗":"Подробнее ↗");
+if(!$("filmDetail").classList.contains("open")) $("filmsHeroTitle").textContent=uz?"To‘liq metrajli kino":"Полнометражное кино";
+}
+document.querySelectorAll("[data-film-lang]").forEach(b=>b.addEventListener("click",()=>{setLanguage(b.dataset.filmLang)}));
 function setLanguage(lang){
 currentLang=lang;try{localStorage.setItem("animepulse-language",lang)}catch(e){}
-translateStatic();render();
+translateStatic();render();translateFilms();
 if($("modal").classList.contains("show")){const id=Number(location.hash.replace("#anime-",""));if(id)openDetails(id)}
 $("languageMenu").classList.remove("open");$("menuButton").setAttribute("aria-expanded","false");
 }
@@ -273,7 +284,7 @@ $("languageMenu").addEventListener("click",e=>{const b=e.target.closest("[data-l
 document.addEventListener("click",e=>{if(!e.target.closest(".menu-wrap"))$("languageMenu").classList.remove("open")});
 </script>
 <script id="dynamicTranslation">
-translateStatic();const originalRender=render;
+translateStatic();translateFilms();const originalRender=render;
 render=function(){originalRender();if(currentLang!=="uz")return;
 $("listTitle").textContent=showFavorites?"Sevimlilar":tr(activeGenre);
 $("resultCount").textContent=$("resultCount").textContent.replace(" тайтл(ов)"," ta anime");
