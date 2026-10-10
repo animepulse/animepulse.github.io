@@ -12,7 +12,7 @@ const anime=[
 ];
 
 const films=[
-{id:101,title:"Интерстеллар",year:2014,genres:["Фантастика","Драма","Приключения"],rating:"8.7",image:"https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxeW0nv0.jpg",desc:"Группа исследователей отправляется за пределы Солнечной системы в поисках нового дома для человечества."},
+{id:101,title:"Интерстеллар",year:2014,genres:["Фантастика","Драма","Приключения"],rating:"8.7",image:"https://image.tmdb.org/t/p/w500/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg",desc:"Группа исследователей отправляется за пределы Солнечной системы в поисках нового дома для человечества."},
 {id:102,title:"Начало",year:2010,genres:["Фантастика","Боевик","Триллер"],rating:"8.8",image:"https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg",desc:"Команда специалистов проникает в чужие сны, чтобы выполнить почти невозможное задание."},
 {id:103,title:"Оппенгеймер",year:2023,genres:["Драма","История","Биография"],rating:"8.3",image:"https://image.tmdb.org/t/p/w500/ptpr0kGAckfQkJeJIt8st5dglvd.jpg",desc:"История физика Роберта Оппенгеймера и создания атомной бомбы во время Второй мировой войны."},
 {id:104,title:"Дюна: Часть вторая",year:2024,genres:["Фантастика","Приключения","Боевик"],rating:"8.5",image:"https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",desc:"Пол Атрейдес объединяется с фременами и продолжает путь, который изменит судьбу Арракиса."},
