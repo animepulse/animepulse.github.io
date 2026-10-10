@@ -138,7 +138,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%;}
 <footer>AnimePulse © <span id="year"></span> · Фанатский проект, не связанный с правообладателями перечисленных произведений.</footer>
 <div class="modal" id="modal"><div class="modal-box"><div class="modal-top"><h2 id="modalTitle"></h2><button class="pill" id="closeModal">Закрыть ×</button></div><div id="modalBody"></div></div></div><div id="filmsView" aria-hidden="true">
 <header class="films-header"><div class="films-top"><div class="films-brand">Anime<span>Pulse</span> <span style="color:var(--text);font-size:15px;font-weight:700">/ Фильмы</span></div><button class="pill" id="closeFilms">← Назад к аниме</button></div></header>
-<main class="films-main"><section class="films-hero"><div class="eyebrow">КИНОТЕКА ANIMEPULSE</div><h1>Полнометражное кино</h1><p>Полнометражные истории, яркие миры и фильмы с высокими оценками. Выбери фильм, чтобы открыть описание, жанры и рейтинг.</p><input id="filmSearch" placeholder="Найти фильм по названию или жанру…" aria-label="Поиск фильмов"></section>
+<main class="films-main"><section class="films-hero"><div class="eyebrow">КИНОТЕКА ANIMEPULSE</div><h1>Полнометражное кино</h1><p>Только игровые фильмы — без аниме и анимационных фильмов. Выбери фильм, чтобы открыть описание, жанры и рейтинг.</p><input id="filmSearch" placeholder="Найти фильм по названию или жанру…" aria-label="Поиск фильмов"></section>
 <div class="section-head"><h2 id="filmsTitle">Популярные фильмы</h2><span class="meta" id="filmCount"></span></div><section class="grid" id="filmsGrid"></section>
 <section class="film-detail" id="filmDetail"><button class="pill" id="backToFilms">← Все фильмы</button><div id="filmDetailContent"></div></section>
 </main></div>
@@ -200,7 +200,7 @@ window.addEventListener("popstate",()=>{if($("modal").classList.contains("show")
 $("closeModal").addEventListener("click",()=>closeDetails());$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeDetails()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDetails()});
 function renderFilms(){
 const q=$("filmSearch").value.trim().toLowerCase();
-const items=films.filter(f=>(f.title+" "+f.genres.join(" ")+" "+f.desc).toLowerCase().includes(q));
+const items=films.filter(f=>f.type!=="anime"&&!/аниме|anime|мультфильм|анимационн/i.test(f.title+" "+f.desc)&&(f.title+" "+f.genres.join(" ")+" "+f.desc).toLowerCase().includes(q));
 $("filmCount").textContent=items.length+" фильмов";
 $("filmsGrid").style.display="";$("filmsTitle").style.display="";$("filmCount").style.display="";
 $("filmDetail").classList.remove("open");
