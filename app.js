@@ -12,7 +12,7 @@ const anime=[
 ];
 
 const films=[
-{id:101,title:"Интерстеллар",year:2014,genres:["Фантастика","Драма","Приключения"],rating:"8.7",image:"https://image.tmdb.org/t/p/w500/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg",desc:"Группа исследователей отправляется за пределы Солнечной системы в поисках нового дома для человечества."},
+{id:101,title:"Интерстеллар",year:2014,genres:["Фантастика","Драма","Приключения"],rating:"8.7",image:"https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxeW0nv0.jpg",desc:"Группа исследователей отправляется за пределы Солнечной системы в поисках нового дома для человечества."},
 {id:102,title:"Начало",year:2010,genres:["Фантастика","Боевик","Триллер"],rating:"8.8",image:"https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg",desc:"Команда специалистов проникает в чужие сны, чтобы выполнить почти невозможное задание."},
 {id:103,title:"Оппенгеймер",year:2023,genres:["Драма","История","Биография"],rating:"8.3",image:"https://image.tmdb.org/t/p/w500/ptpr0kGAckfQkJeJIt8st5dglvd.jpg",desc:"История физика Роберта Оппенгеймера и создания атомной бомбы во время Второй мировой войны."},
 {id:104,title:"Дюна: Часть вторая",year:2024,genres:["Фантастика","Приключения","Боевик"],rating:"8.5",image:"https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",desc:"Пол Атрейдес объединяется с фременами и продолжает путь, который изменит судьбу Арракиса."},
@@ -23,7 +23,7 @@ const films=[
 {id:109,title:"Аватар: Путь воды",year:2022,genres:["Фантастика","Приключения","Боевик"],rating:"7.5",image:"https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg",desc:"Джейк и Нейтири защищают семью и знакомятся с народом океанских рифов на Пандоре."},
 {id:110,title:"Тёмный рыцарь",year:2008,genres:["Боевик","Криминал","Драма"],rating:"9.0",image:"https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",desc:"Бэтмен пытается защитить Готэм от Джокера — преступника, стремящегося погрузить город в хаос."},
 {id:111,title:"Паразиты",year:2019,genres:["Триллер","Драма","Комедия"],rating:"8.5",image:"https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",desc:"Бедная семья постепенно проникает в жизнь богатого дома, и эта хитрая игра приводит к неожиданным последствиям."},
-{id:112,title:"Грань будущего",year:2014,genres:["Фантастика","Боевик"],rating:"7.9",image:"https://image.tmdb.org/t/p/w500/xjw5trD4gSg4f5w3T9r3xT2y0mJ.jpg",desc:"Военный оказывается во временной петле и снова переживает один и тот же бой с инопланетными захватчиками."}
+{id:112,title:"Грань будущего",year:2014,genres:["Фантастика","Боевик"],rating:"7.9",image:"https://image.tmdb.org/t/p/w500/h3weAFgg06GqchI2xDfufim6f4.jpg",desc:"Военный оказывается во временной петле и снова переживает один и тот же бой с инопланетными захватчиками."}
 ];
 let activeGenre="Все",showFavorites=false,favorites=new Set();
 try{const savedFavorites=JSON.parse(localStorage.getItem("animepulse-favorites")||"[]");if(Array.isArray(savedFavorites))favorites=new Set(savedFavorites.filter(id=>Number.isInteger(id)&&anime.some(a=>a.id===id)))}catch(e){favorites=new Set()}
