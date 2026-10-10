@@ -196,7 +196,7 @@ if(!$("modal").classList.contains("show"))return;
 if(useHistory&&history.state&&history.state.animePulseDetail){history.back();return;}
 $("modal").classList.remove("show");document.body.classList.remove("modal-open");
 }
-window.addEventListener("popstate",()=>{if($("modal").classList.contains("show")){closeDetails(false);return}if($("filmsView").classList.contains("open")){$("filmsView").classList.remove("open");$("filmsView").setAttribute("aria-hidden","true");document.body.classList.remove("modal-open");$("filmDetail").classList.remove("open");$("filmsGrid").style.display="";$("filmsTitle").style.display="";$("filmCount").style.display="";return}});
+window.addEventListener("popstate",()=>{if($("modal").classList.contains("show")){closeDetails(false);return}if($("filmsView").classList.contains("open")){if($("filmDetail").classList.contains("open")){renderFilms();return}$("filmsView").classList.remove("open");$("filmsView").setAttribute("aria-hidden","true");document.body.classList.remove("modal-open");return}});
 $("closeModal").addEventListener("click",()=>closeDetails());$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeDetails()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDetails()});
 function renderFilms(){
 const q=$("filmSearch").value.trim().toLowerCase();
@@ -208,6 +208,7 @@ $("filmsGrid").innerHTML=items.length?items.map(f=>'<article class="card"><div c
 }
 function openFilmDetails(id){
 const f=films.find(x=>x.id===id);if(!f)return;
+if(!$("filmDetail").classList.contains("open"))history.pushState({animePulseFilms:true,animePulseFilmDetail:id},"","#film-"+id);
 $("filmsGrid").style.display="none";$("filmsTitle").style.display="none";$("filmCount").style.display="none";$("filmDetail").classList.add("open");
 $("filmDetailContent").innerHTML='<div class="film-detail-layout"><div><div class="eyebrow">ANIMEPULSE FILM</div><h2>'+f.title+'</h2><div class="meta">'+f.year+' · ★ '+f.rating+' · '+(currentLang==="uz"?"To‘liq metrajli film":"Полнометражный фильм")+'</div><div class="detail-genres">'+f.genres.map(g=>'<span class="tag">'+g+'</span>').join("")+'</div><p>'+f.desc+'</p><div class="film-actions"><a class="player-source-btn" href="https://www.youtube.com/results?search_query='+encodeURIComponent(f.title+" anime movie")+'" target="_blank" rel="noopener">'+(currentLang==="uz"?"Treylerni topish ↗":"Найти трейлер ↗")+'</a></div><p class="media-hint">'+(currentLang==="uz"?"Bu tugma treyler qidiruvini ochadi; filmning o‘zi AnimePulse’da joylashtirilmagan.":"Кнопка открывает поиск трейлеров; сам фильм не размещён на AnimePulse.")+'</p></div><img class="film-detail-poster" src="'+f.image+'" alt="Постер '+f.title+'" onerror="this.style.display=\'none\'"></div>';
 $("filmsView").scrollTop=0;
@@ -216,7 +217,7 @@ $("openFilms").addEventListener("click",()=>{$("languageMenu").classList.remove(
 $("closeFilms").addEventListener("click",()=>{if(history.state&&history.state.animePulseFilms){history.back();return}$("filmsView").classList.remove("open");$("filmsView").setAttribute("aria-hidden","true");document.body.classList.remove("modal-open")});
 $("filmSearch").addEventListener("input",renderFilms);
 $("filmsGrid").addEventListener("click",e=>{const b=e.target.closest("[data-film-details]");if(b)openFilmDetails(Number(b.dataset.filmDetails))});
-$("backToFilms").addEventListener("click",renderFilms);
+$("backToFilms").addEventListener("click",()=>{if(history.state&&history.state.animePulseFilmDetail){history.back();return}renderFilms()});
 $("year").textContent=new Date().getFullYear();render();
 </script>
 <script id="languageFeature">
