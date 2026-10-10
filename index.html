@@ -110,15 +110,38 @@ body.modal-open{overflow:hidden;position:fixed;width:100%;}
 .language-menu button:hover,.language-menu button.active{background:#ff6a1a22;color:#ff9b6d}
 @media(max-width:420px){.logo{font-size:20px}header{padding:11px 12px}.menu-wrap{margin-right:6px}}
 
+
+/* Full-screen films catalog */
+#filmsView{display:none;position:fixed;inset:0;z-index:10000;overflow-y:auto;background:var(--bg);overscroll-behavior:contain}
+#filmsView.open{display:block}
+.films-header{position:sticky;top:0;z-index:3;background:#101014ed;border-bottom:1px solid var(--line);padding:14px 16px}
+.films-top{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.films-brand{font-size:23px;font-weight:900}.films-brand span{color:var(--orange)}
+.films-main{max-width:1100px;margin:auto;padding:22px 16px 50px}
+.films-hero{padding:26px 22px;border:1px solid #48303b;border-radius:22px;background:radial-gradient(ellipse at 85% 10%,#713018,transparent 40%),linear-gradient(135deg,#28202b,#15151c)}
+.films-hero .eyebrow{color:var(--orange)}.films-hero h1{font-size:clamp(30px,7vw,48px);margin:10px 0}.films-hero p{color:#c5c2cc;line-height:1.6;margin-bottom:18px}
+#filmSearch{width:100%;max-width:600px;background:#101014;border:1px solid #45404b;color:white;border-radius:12px;padding:13px}
+#filmsGrid{margin-top:20px}
+.film-detail{display:none;margin-top:22px}.film-detail.open{display:block}
+.film-detail-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,30%);gap:24px;align-items:start;margin-top:20px}
+.film-detail-poster{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:16px;border:1px solid var(--line)}
+.film-detail h2{font-size:clamp(27px,4vw,42px);margin:12px 0}.film-detail p{color:#d0ced8;line-height:1.8}
+.film-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+@media(max-width:560px){.films-header{padding:11px 12px}.films-brand{font-size:20px}.films-main{padding:15px 12px 35px}.films-hero{padding:23px 17px}.film-detail-layout{grid-template-columns:minmax(0,1fr) 36%;gap:12px}.film-detail h2{font-size:23px}}
 </style></head><body>
-<header><div class="top"><div class="logo">Anime<span>Pulse</span></div><button class="pill" id="favoritesToggle">♡ <span data-i18n="favorites">Избранное</span> <span id="favCount">0</span></button><div class="menu-wrap" style="margin-left:0;margin-right:0"><button class="menu-button" id="menuButton" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button><div class="language-menu" id="languageMenu"><button type="button" data-lang="uz">🇺🇿 O‘zbekcha</button><button type="button" data-lang="ru" class="active">🇷🇺 Русский</button></div></div></div></header>
+<header><div class="top"><div class="logo">Anime<span>Pulse</span></div><button class="pill" id="favoritesToggle">♡ <span data-i18n="favorites">Избранное</span> <span id="favCount">0</span></button><div class="menu-wrap" style="margin-left:0;margin-right:0"><button class="menu-button" id="menuButton" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button><div class="language-menu" id="languageMenu"><button type="button" id="openFilms">🎬 Фильмы</button><button type="button" data-lang="uz">🇺🇿 O‘zbekcha</button><button type="button" data-lang="ru" class="active">🇷🇺 Русский</button></div></div></div></header>
 <main><section class="hero"><div class="eyebrow">ТВОЙ МИР АНИМЕ</div><h1>Найди свою<br>следующую историю.</h1><p>Открывай новые миры, сохраняй любимые тайтлы и собирай личную коллекцию аниме.</p><div class="search"><input id="search" placeholder="Название или жанр..." aria-label="Поиск аниме"><button class="primary" id="searchBtn">Найти</button></div></section>
 <div class="section-head"><h2 id="listTitle">Популярное</h2><span id="resultCount" class="meta"></span></div>
 <div class="filters" id="filters"><button class="filter active" data-genre="Все">Все</button><button class="filter" data-genre="Фэнтези">Фэнтези</button><button class="filter" data-genre="Экшен">Экшен</button><button class="filter" data-genre="Романтика">Романтика</button><button class="filter" data-genre="Драма">Драма</button><button class="filter" data-genre="Приключения">Приключения</button></div>
 <section class="grid" id="catalog"></section>
 <p class="note">Демо-проект AnimePulse. Это каталог-рекомендатель, а не сайт для просмотра серий. Постеры загружаются с CDN MyAnimeList. Если изображение временно недоступно, карточка покажет цветной фон.</p></main>
 <footer>AnimePulse © <span id="year"></span> · Фанатский проект, не связанный с правообладателями перечисленных произведений.</footer>
-<div class="modal" id="modal"><div class="modal-box"><div class="modal-top"><h2 id="modalTitle"></h2><button class="pill" id="closeModal">Закрыть ×</button></div><div id="modalBody"></div></div></div>
+<div class="modal" id="modal"><div class="modal-box"><div class="modal-top"><h2 id="modalTitle"></h2><button class="pill" id="closeModal">Закрыть ×</button></div><div id="modalBody"></div></div></div><div id="filmsView" aria-hidden="true">
+<header class="films-header"><div class="films-top"><div class="films-brand">Anime<span>Pulse</span> <span style="color:var(--text);font-size:15px;font-weight:700">/ Фильмы</span></div><button class="pill" id="closeFilms">← Назад к аниме</button></div></header>
+<main class="films-main"><section class="films-hero"><div class="eyebrow">КИНОТЕКА ANIMEPULSE</div><h1>Аниме-фильмы</h1><p>Полнометражные истории, яркие миры и фильмы с высокими оценками. Выбери фильм, чтобы открыть описание, жанры и рейтинг.</p><input id="filmSearch" placeholder="Найти фильм по названию или жанру…" aria-label="Поиск фильмов"></section>
+<div class="section-head"><h2 id="filmsTitle">Популярные фильмы</h2><span class="meta" id="filmCount"></span></div><section class="grid" id="filmsGrid"></section>
+<section class="film-detail" id="filmDetail"><button class="pill" id="backToFilms">← Все фильмы</button><div id="filmDetailContent"></div></section>
+</main></div>
 <script>
 const anime=[
 {id:1,title:"Solo Leveling",year:2024,genres:["Экшен","Фэнтези","Приключения"],rating:"8.7",symbol:"⚔",image:"https://cdn.myanimelist.net/images/anime/1733/142687l.jpg",c1:"#51234f",c2:"#101b3d",desc:"Охотник Сон Джин-у получает загадочную систему, которая позволяет ему становиться сильнее.",status:"Завершён сезон"},
@@ -129,6 +152,21 @@ const anime=[
 {id:6,title:"Хоримия",year:2021,genres:["Романтика"],rating:"8.1",symbol:"♡",image:"https://cdn.myanimelist.net/images/anime/1695/111486l.jpg",c1:"#ef9eae",c2:"#59436e",desc:"Хори и Миямура открывают друг другу настоящих себя за пределами школьных образов.",status:"Завершён сезон"},
 {id:7,title:"Вайолет Эвергарден",year:2018,genres:["Драма","Приключения"],rating:"8.7",symbol:"✉",image:"https://cdn.myanimelist.net/images/anime/1795/95088l.jpg",c1:"#83a8b8",c2:"#374a73",desc:"Бывшая солдатка учится понимать чувства людей, помогая им писать письма.",status:"Завершено"},
 {id:8,title:"Реинкарнация безработного",year:2021,genres:["Фэнтези","Приключения","Драма"],rating:"8.3",symbol:"魔",image:"https://cdn.myanimelist.net/images/anime/1530/117776l.jpg",c1:"#b17b3b",c2:"#583d58",desc:"Мужчина получает второй шанс в магическом мире и пытается прожить новую жизнь иначе.",status:"Несколько сезонов"}
+];
+
+const films=[
+{id:101,title:"Твоё имя",year:2016,genres:["Романтика","Драма","Фэнтези"],rating:"8.8",image:"https://cdn.myanimelist.net/images/anime/5/87048l.jpg",desc:"Два незнакомых подростка загадочным образом меняются телами и пытаются найти друг друга, несмотря на время и расстояние."},
+{id:102,title:"Унесённые призраками",year:2001,genres:["Приключения","Фэнтези"],rating:"8.8",image:"https://cdn.myanimelist.net/images/anime/6/79597l.jpg",desc:"Девочка попадает в загадочный мир духов и должна найти способ спасти родителей и вернуться домой."},
+{id:103,title:"Форма голоса",year:2016,genres:["Драма","Романтика"],rating:"8.9",image:"https://cdn.myanimelist.net/images/anime/1122/96435l.jpg",desc:"Бывший школьный задира пытается искупить прошлые поступки и наладить отношения с глухой девушкой."},
+{id:104,title:"Ходячий замок",year:2004,genres:["Фэнтези","Романтика","Приключения"],rating:"8.7",image:"https://cdn.myanimelist.net/images/anime/5/75810l.jpg",desc:"Юная Софи оказывается под проклятием и встречает загадочного волшебника Хаула в странствующем замке."},
+{id:105,title:"Судзумэ, закрывающая двери",year:2022,genres:["Приключения","Фэнтези","Драма"],rating:"8.2",image:"https://cdn.myanimelist.net/images/anime/1598/128450l.jpg",desc:"Девушка отправляется в путешествие по Японии, чтобы закрыть таинственные двери, несущие бедствия."},
+{id:106,title:"Дитя погоды",year:2019,genres:["Романтика","Драма","Фэнтези"],rating:"8.3",image:"https://cdn.myanimelist.net/images/anime/1880/101146l.jpg",desc:"Сбежавший в Токио парень знакомится с девушкой, способной ненадолго разгонять тучи и вызывать солнце."},
+{id:107,title:"Я хочу съесть твою поджелудочную",year:2018,genres:["Драма","Романтика"],rating:"8.5",image:"https://cdn.myanimelist.net/images/anime/1768/93291l.jpg",desc:"Замкнутый школьник узнаёт тайну одноклассницы и постепенно учится ценить близость и каждый прожитый день."},
+{id:108,title:"5 сантиметров в секунду",year:2007,genres:["Драма","Романтика"],rating:"7.5",image:"https://cdn.myanimelist.net/images/anime/1410/112994l.jpg",desc:"История взросления и отношений двух людей, которых постепенно разделяют расстояние и время."},
+{id:109,title:"Истребитель демонов: Поезд «Бесконечный»",year:2020,genres:["Экшен","Фэнтези","Приключения"],rating:"8.5",image:"https://cdn.myanimelist.net/images/anime/1779/99636l.jpg",desc:"Тандзиро и его товарищи отправляются на поезд, где пассажирам угрожает могущественный демон."},
+{id:110,title:"Волчьи дети Амэ и Юки",year:2012,genres:["Драма","Фэнтези"],rating:"8.6",image:"https://cdn.myanimelist.net/images/anime/1411/113419l.jpg",desc:"Молодая мать растит двух детей, унаследовавших от отца способность превращаться в волков."},
+{id:111,title:"Мальчик и птица",year:2023,genres:["Приключения","Фэнтези"],rating:"7.5",image:"https://cdn.myanimelist.net/images/anime/1436/138644l.jpg",desc:"После семейной трагедии мальчик следует за загадочной цаплей в удивительный мир между жизнью и смертью."},
+{id:112,title:"Сад изящных слов",year:2013,genres:["Драма","Романтика"],rating:"7.9",image:"https://cdn.myanimelist.net/images/anime/4/87048l.jpg",desc:"В дождливом саду случайная встреча сближает школьника, мечтающего стать сапожником, и загадочную женщину."}
 ];
 let activeGenre="Все",showFavorites=false,favorites=new Set();
 try{favorites=new Set(JSON.parse(localStorage.getItem("animepulse-favorites")||"[]"))}catch(e){}
@@ -159,7 +197,27 @@ if(useHistory&&history.state&&history.state.animePulseDetail){history.back();ret
 $("modal").classList.remove("show");document.body.classList.remove("modal-open");
 }
 window.addEventListener("popstate",()=>{if($("modal").classList.contains("show"))closeDetails(false)});
-$("closeModal").addEventListener("click",()=>closeDetails());$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeDetails()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDetails()});$("year").textContent=new Date().getFullYear();render();
+$("closeModal").addEventListener("click",()=>closeDetails());$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeDetails()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDetails()});
+function renderFilms(){
+const q=$("filmSearch").value.trim().toLowerCase();
+const items=films.filter(f=>(f.title+" "+f.genres.join(" ")+" "+f.desc).toLowerCase().includes(q));
+$("filmCount").textContent=items.length+" фильмов";
+$("filmsGrid").style.display="";$("filmsTitle").style.display="";$("filmCount").style.display="";
+$("filmDetail").classList.remove("open");
+$("filmsGrid").innerHTML=items.length?items.map(f=>'<article class="card"><div class="poster" style="--c1:#5b2b42;--c2:#17223d"><img class="poster-img" src="'+f.image+'" alt="Постер '+f.title+'" loading="lazy" onerror="this.style.display=\'none\'"><span class="rank">★ '+f.rating+'</span><div class="poster-title">'+f.title+'</div></div><div class="info"><div class="meta">'+f.year+' · '+f.genres.join(" / ")+'</div><div class="desc">'+f.desc+'</div><div class="card-actions"><button data-film-details="'+f.id+'">Подробнее ↗</button></div></div></article>').join(""):'<div class="empty">Фильмы не найдены. Попробуй другое название или жанр.</div>';
+}
+function openFilmDetails(id){
+const f=films.find(x=>x.id===id);if(!f)return;
+$("filmsGrid").style.display="none";$("filmsTitle").style.display="none";$("filmCount").style.display="none";$("filmDetail").classList.add("open");
+$("filmDetailContent").innerHTML='<div class="film-detail-layout"><div><div class="eyebrow">ANIMEPULSE FILM</div><h2>'+f.title+'</h2><div class="meta">'+f.year+' · ★ '+f.rating+' · Полнометражный фильм</div><div class="detail-genres">'+f.genres.map(g=>'<span class="tag">'+g+'</span>').join("")+'</div><p>'+f.desc+'</p><div class="film-actions"><a class="player-source-btn" href="https://www.youtube.com/results?search_query='+encodeURIComponent(f.title+" anime movie")+'" target="_blank" rel="noopener">Найти трейлер ↗</a></div><p class="media-hint">Кнопка открывает поиск трейлеров; сам фильм не размещён на AnimePulse.</p></div><img class="film-detail-poster" src="'+f.image+'" alt="Постер '+f.title+'" onerror="this.style.display=\'none\'"></div>';
+$("filmsView").scrollTop=0;
+}
+$("openFilms").addEventListener("click",()=>{$("languageMenu").classList.remove("open");$("filmsView").classList.add("open");$("filmsView").setAttribute("aria-hidden","false");document.body.classList.add("modal-open");$("filmSearch").value="";renderFilms();$("filmsView").scrollTop=0});
+$("closeFilms").addEventListener("click",()=>{$("filmsView").classList.remove("open");$("filmsView").setAttribute("aria-hidden","true");document.body.classList.remove("modal-open")});
+$("filmSearch").addEventListener("input",renderFilms);
+$("filmsGrid").addEventListener("click",e=>{const b=e.target.closest("[data-film-details]");if(b)openFilmDetails(Number(b.dataset.filmDetails))});
+$("backToFilms").addEventListener("click",renderFilms);
+$("year").textContent=new Date().getFullYear();render();
 </script>
 <script id="languageFeature">
 const translations = {
