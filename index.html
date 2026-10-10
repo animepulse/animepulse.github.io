@@ -292,7 +292,7 @@ document.querySelectorAll("[data-film-lang]").forEach(b=>b.addEventListener("cli
 function setLanguage(lang){
 currentLang=lang;try{localStorage.setItem("animepulse-language",lang)}catch(e){}
 translateStatic();render();translateFilms();
-if($("filmsView").classList.contains("open")&&$("filmDetail").classList.contains("open")){const filmId=Number((location.hash.match(/#film-(\\d+)/)||[])[1]);if(filmId)openFilmDetails(filmId);else renderFilms()}
+if($("filmsView").classList.contains("open")&&$("filmDetail").classList.contains("open")){const hashMatch=location.hash.match(/#film-(\d+)/);const filmId=Number((history.state&&history.state.animePulseFilmDetail)|| (hashMatch&&hashMatch[1]) || 0);if(filmId)openFilmDetails(filmId);else renderFilms()}
 if($("modal").classList.contains("show")){const id=Number(location.hash.replace("#anime-",""));if(id)openDetails(id)}
 $("languageMenu").classList.remove("open");$("menuButton").setAttribute("aria-expanded","false");
 }
